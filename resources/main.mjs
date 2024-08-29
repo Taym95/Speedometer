@@ -107,6 +107,11 @@ class MainBenchmarkClient {
         this._metrics = metrics;
 
         const scoreResults = this._computeResults(this._measuredValuesList, "score");
+        if (params.headless) {
+            console.log(this._formattedJSONResult({ modern: true }));
+            window.close();
+            return;
+        }
         if (scoreResults.isValid)
             this._populateValidScore(scoreResults);
         else
@@ -132,6 +137,7 @@ class MainBenchmarkClient {
         document.getElementById("summary").className = "valid";
 
         this._updateGaugeNeedle(scoreResults.mean);
+        console.log(`Score: ${scoreResults.formattedMeanAndDelta}`);
         document.getElementById("result-number").textContent = scoreResults.formattedMean;
         if (scoreResults.formattedDelta)
             document.getElementById("confidence-number").textContent = `\u00b1 ${scoreResults.formattedDelta}`;
@@ -222,6 +228,7 @@ class MainBenchmarkClient {
         });
 
         const toplevelMetrics = Object.values(metrics).filter((each) => !each.parent && each.children.length > 0);
+        toplevelMetrics.forEach(el => console.log(`${el.name}: ${el.mean.toFixed(2)} ± (${el.percentDelta.toFixed(1)}) ${el.delta.toFixed(2)} ms`));
         document.getElementById("tests-chart").innerHTML = renderMetricView({
             metrics: toplevelMetrics,
             width: plotWidth,

@@ -75,12 +75,12 @@ async function test() {
     // driver = await new Builder().withCapabilities(capabilities).build();
 
     driver = await new Builder().withCapabilities({
-        browserName: `servo`,
-        browserVersion: `0.0.1`,
-        platform: `mac`,
-  platformName: `mac`,
-  version: `0.0.1`,
-}).usingServer(`http://0.0.0.0:7002/`).build();
+        browserName: "servo",
+        browserVersion: "0.0.1",
+        platform: "mac",
+        platformName: "mac",
+        version: "0.0.1",
+    }).usingServer("http://0.0.0.0:7002/").build();
 
     try {
         await driver.get(`http://localhost:${PORT}/tests/index.html`);
